@@ -25,10 +25,10 @@ public class CalculadoraController {
                                                     @RequestParam(name = "numero2") BigDecimal numero2,
                                                     @RequestParam(name = "operacion") String operacion) {
 
-        double resultado = this.calculadoraService.realizarOperacion(numero1, numero2, operacion);
+        double result = this.calculadoraService.realizarOperacion(numero1, numero2, operacion);
 
-        tracer.trace(resultado);
+        tracer.trace(result);
 
-        return new ResponseEntity<>(resultado, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
