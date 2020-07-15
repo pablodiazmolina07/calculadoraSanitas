@@ -21,8 +21,8 @@ public class CalculadoraController {
     private TracerImpl tracer = new TracerImpl();
 
     @GetMapping(value = "/realizarOperacion")
-    public ResponseEntity<Double> realizarOperacion(@RequestParam(name = "numero1") BigDecimal numero1,
-                                                    @RequestParam(name = "numero2") BigDecimal numero2,
+    public ResponseEntity<Double> realizarOperacion(@RequestParam(name = "numero1") String numero1,
+                                                    @RequestParam(name = "numero2") String numero2,
                                                     @RequestParam(name = "operacion") String operacion) {
 
         double result = this.calculadoraService.realizarOperacion(numero1, numero2, operacion);

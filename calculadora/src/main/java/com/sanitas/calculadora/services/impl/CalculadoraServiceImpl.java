@@ -13,21 +13,34 @@ public class CalculadoraServiceImpl implements ICalculadoraService {
     private static final Logger log = LoggerFactory.getLogger(CalculadoraServiceImpl.class);
 
     @Override
-    public double realizarOperacion(BigDecimal numero1, BigDecimal numero2, String operacion) {
+    public double realizarOperacion(String numero1, String numero2, String operacion) {
         log.info("realizarOperacion - INICIO");
         double resultado = 0;
 
         // Validamos si la operación es correcta
         if (!"".equalsIgnoreCase(operacion)){
-            // Identificamos la operación y la realizamos.
-            if (Constantes.OPERACION_SUMA.equals(operacion)){
-                resultado = numero1.add(numero2).doubleValue();
-            }else if (Constantes.OPERACION_RESTA.equals(operacion)){
-                resultado = numero1.subtract(numero2).doubleValue();
+            try
+            {
+                //Transformamos las cadenas de entrada a numéricos
+                BigDecimal bdNumero1 = new BigDecimal(numero1.replace(",", "."));
+                BigDecimal bdNumero2 = new BigDecimal(numero2.replace(",", "."));
+
+                // Identificamos la operación y la realizamos.
+                if (Constantes.OPERACION_SUMA.equals(operacion.toUpperCase()) ||
+                        Constantes.OPERACION_SUMAR.equals(operacion.toUpperCase())){
+                    resultado = bdNumero1.add(bdNumero2).doubleValue();
+                }else if (Constantes.OPERACION_RESTA.equals(operacion.toUpperCase()) ||
+                        Constantes.OPERACION_RESTAR.equals(operacion.toUpperCase())){
+                    resultado = bdNumero1.subtract(bdNumero2).doubleValue();
+                }
+                else{
+                    log.error("Operacion " + operacion + " no identificada");
+                    throw new RuntimeException("Operacion " + operacion + " no identificada");
+                }
             }
-            else{
-                log.error("Operacion " + operacion + " no identificada");
-                throw new RuntimeException("Operacion " + operacion + " no identificada");
+            catch (NumberFormatException ex){
+                log.error("Formato de los números a operar incorrecto. Numero1: " + numero1 + " Numero2: " + numero2);
+                throw new RuntimeException("Formato de los números a operar incorrecto. Numero1: " + numero1 + " Numero2: " + numero2);
             }
         }
         else{
@@ -35,7 +48,7 @@ public class CalculadoraServiceImpl implements ICalculadoraService {
             throw new RuntimeException("Operacion es nulo. Es imposible realizar la operación");
         }
 
-        log.info("realizarOperacion - FIN - resultado: " + String.valueOf(resultado));
+        log.info("realizarOperacion - FIN - resultado: " + resultado);
 
         return resultado;
     }
