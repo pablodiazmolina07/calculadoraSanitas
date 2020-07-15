@@ -1,21 +1,24 @@
 package com.sanitas.calculadora;
 
-import com.sanitas.calculadora.services.ICalculadoraService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@SpringBootTest
-class CalculadoraApplicationTests {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = CalculadoraApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class CalculadoraApplicationTests {
+    @LocalServerPort
+    int randomServerPort;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
     }
 
     /**
@@ -29,7 +32,7 @@ class CalculadoraApplicationTests {
     private ResponseEntity<Double> realizarOperacion(String numero1, String numero2, String operacion) throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
 
-        final String baseUrl = "http://localhost:8080" + "/api/realizarOperacion?numero1=" + numero1 +
+        final String baseUrl = "http://localhost:" + randomServerPort + "/api/realizarOperacion?numero1=" + numero1 +
                 "&numero2=" + numero1 + "&operacion=" + operacion;
         URI uri = new URI(baseUrl);
 
@@ -43,8 +46,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10", "5", "suma");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(15.0d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(15.0d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -53,8 +57,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10.5", "5", "suma");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(15.5d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(15.5d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -63,8 +68,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10", "5,5", "suma");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(15.5d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(15.5d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -73,8 +79,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10", "5", "sumar");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(15.0d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(15.0d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -83,8 +90,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10.5", "5", "sumar");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(15.5d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(15.5d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -93,8 +101,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10", "5,5", "sumar");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(15.5d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(15.5d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -103,8 +112,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10", "5", "resta");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(5.0d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(5.0d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -113,8 +123,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10.5", "5", "resta");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(4.5d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(4.5d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -123,8 +134,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("10", "5,5", "resta");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(4.5d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(4.5d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -133,8 +145,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("5", "10", "restar");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(-5.0d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(-5.0d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -143,8 +156,9 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("5", "10.5", "restar");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(-4.5d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(-4.5d, resultado.getBody().doubleValue(), 0.001d);
     }
 
     @Test
@@ -153,7 +167,8 @@ class CalculadoraApplicationTests {
         ResponseEntity<Double> resultado = realizarOperacion("5,5", "10", "restar");
 
         //Comprueba el resultado
-        Assertions.assertEquals(200, resultado.getStatusCodeValue());
-        Assertions.assertEquals(-4.5d, resultado.getBody().doubleValue(), 0.001d);
+        Assert.assertEquals(true, resultado != null);
+        Assert.assertEquals(200, resultado.getStatusCodeValue());
+        Assert.assertEquals(-4.5d, resultado.getBody().doubleValue(), 0.001d);
     }
 }
