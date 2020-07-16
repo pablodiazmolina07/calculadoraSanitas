@@ -1,9 +1,8 @@
 package com.sanitas.calculadora.controllers;
 
+import com.sanitas.calculadora.dtos.ResultDTO;
 import com.sanitas.calculadora.services.ICalculadoraService;
-import io.corp.calculator.TracerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/calculadora")
 public class CalculadoraController {
     @Autowired
     private ICalculadoraService calculadoraService;
-
-    private TracerImpl tracer = new TracerImpl();
 
     /**
      * Método Get visible para llamar al microservicio
@@ -26,14 +23,21 @@ public class CalculadoraController {
      * @return resultado de la operación
      */
     @GetMapping(value = "/realizarOperacion")
-    public ResponseEntity<Double> realizarOperacion(@RequestParam(name = "numero1") String numero1,
-                                                    @RequestParam(name = "numero2") String numero2,
-                                                    @RequestParam(name = "operacion") String operacion) {
+    public ResponseEntity<ResultDTO> realizarOperacion(@RequestParam(name = "numero1", required=true) String numero1,
+                                                    @RequestParam(name = "numero2", required=true) String numero2,
+                                                    @RequestParam(name = "operacion", required=true) String operacion) {
 
-        double result = this.calculadoraService.realizarOperacion(numero1, numero2, operacion);
+        final ResultDTO result = this.calculadoraService.realizarOperacion(numero1, numero2, operacion);
 
-        tracer.trace(result);
+        if (result != null){
+            if (result.isSuccess()){
+                return ResponseEntity.ok(result);
+            }
+            else{
+                return ResponseEntity.badRequest().body(result);
+            }
+        }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

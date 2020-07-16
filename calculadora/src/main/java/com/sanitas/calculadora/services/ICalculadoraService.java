@@ -1,6 +1,6 @@
 package com.sanitas.calculadora.services;
 
-import java.math.BigDecimal;
+import com.sanitas.calculadora.dtos.ResultDTO;
 
 /**
  * Interfaz del microservicio
@@ -13,5 +13,5 @@ public interface ICalculadoraService {
      * @param operacion Operación a realizar. Suma o Resta
      * @return Resultado de la operación
      */
-    double realizarOperacion (String numero1, String numero2, String operacion);
+    ResultDTO realizarOperacion (String numero1, String numero2, String operacion);
 }
