@@ -5,6 +5,7 @@ import com.sanitas.calculadora.dtos.ResultDTO;
 import com.sanitas.calculadora.services.ICalculadoraService;
 import com.sanitas.calculadora.utils.OperacionUtils;
 //import io.corp.calculator.TracerImpl;
+import io.corp.calculator.TracerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 public class CalculadoraServiceImpl implements ICalculadoraService {
     private static final Logger log = LoggerFactory.getLogger(CalculadoraServiceImpl.class);
 
-    //private TracerImpl tracer = new TracerImpl();
+    private TracerImpl tracer = new TracerImpl();
 
     @Override
     public ResultDTO realizarOperacion(String numero1, String numero2, String operacion) {
@@ -60,7 +61,7 @@ public class CalculadoraServiceImpl implements ICalculadoraService {
 
         log.info("realizarOperacion - FIN - resultado: " + resultado);
 
-        //tracer.trace(resultDTO);
+        tracer.trace(resultDTO);
 
         return resultDTO;
     }

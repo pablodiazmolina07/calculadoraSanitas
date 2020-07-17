@@ -10,9 +10,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.math.BigDecimal;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -67,9 +64,7 @@ public class CalculadoraControllerTest {
 
     @Test
     public void operacionNoPermitida() throws Exception {
-        ResultDTO resultOperation = new ResultDTO();
-        resultOperation.setSuccess(true);
-        resultOperation.setResult("3.8");
+        ResultDTO resultOperation = new ResultDTO("15.0" ,true);
         when(calculadoraService.realizarOperacion("10", "5","suma")).thenReturn(resultOperation);
 
         String url = SUMA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10")
@@ -83,10 +78,8 @@ public class CalculadoraControllerTest {
 
     @Test
     public void formatoOperadoresNoValido() throws Exception {
-        ResultDTO resultOperation = new ResultDTO();
-        resultOperation.setSuccess(true);
-        resultOperation.setResult("3.8");
-        when(calculadoraService.realizarOperacion("10", "5","suma")).thenReturn(resultOperation);
+        ResultDTO resultOperation = new ResultDTO("15.0", true);
+        when(calculadoraService.realizarOperacion("10", "","suma")).thenReturn(resultOperation);
 
         String url = SUMA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10")
                 .concat("&").concat(SECOND_PARAM_NAME).concat("=").concat("")
@@ -99,9 +92,7 @@ public class CalculadoraControllerTest {
 
     @Test
     public void operacionSuma_responseOK() throws Exception {
-        ResultDTO resultOperation = new ResultDTO();
-        resultOperation.setSuccess(true);
-        resultOperation.setResult("3.8");
+        ResultDTO resultOperation = new ResultDTO("15.0", true);
         when(calculadoraService.realizarOperacion("10", "5","suma")).thenReturn(resultOperation);
 
         String url = SUMA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10")
@@ -114,10 +105,9 @@ public class CalculadoraControllerTest {
 
     @Test
     public void operacionResta_responseOK() throws Exception {
-        ResultDTO resultOperation = new ResultDTO();
-        resultOperation.setSuccess(true);
-        resultOperation.setResult("3.8");
-        when(calculadoraService.realizarOperacion("10", "5","suma")).thenReturn(resultOperation);
+        ResultDTO resultOperation = new ResultDTO("5.0", true);
+
+        when(calculadoraService.realizarOperacion("10", "5","resta")).thenReturn(resultOperation);
 
         ResultActions result = mvc.perform(
                 post(SUMA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10")
