@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller de la api
+ */
 @RestController
 @RequestMapping("/api/calculadora")
 public class CalculadoraController {
@@ -27,8 +30,10 @@ public class CalculadoraController {
                                                     @RequestParam(name = "numero2", required=true) String numero2,
                                                     @RequestParam(name = "operacion", required=true) String operacion) {
 
+        // Realizamos la llamada el servicio encargado de realizar la operación.
         final ResultDTO result = this.calculadoraService.realizarOperacion(numero1, numero2, operacion);
 
+        // Tratamos el resultado de la operación.
         if (result != null){
             if (result.isSuccess()){
                 return ResponseEntity.ok(result);

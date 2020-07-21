@@ -4,7 +4,6 @@ import com.sanitas.calculadora.constants.Constantes;
 import com.sanitas.calculadora.dtos.ResultDTO;
 import com.sanitas.calculadora.services.ICalculadoraService;
 import com.sanitas.calculadora.utils.OperacionUtils;
-//import io.corp.calculator.TracerImpl;
 import io.corp.calculator.TracerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +36,21 @@ public class CalculadoraServiceImpl implements ICalculadoraService {
                 // Identificamos la operación y la realizamos.
                 if (Constantes.OPERACION_SUMA.equals(operacion.toUpperCase()) ||
                         Constantes.OPERACION_SUMAR.equals(operacion.toUpperCase())){
+                    // Realizamos la operación suma.
                     resultado = OperacionUtils.operacionSuma(bdNumero1, bdNumero2);
+
+                    // Guardamos el resultado de la operación.
                     resultDTO = new ResultDTO(String.valueOf(resultado), true);
                 }else if (Constantes.OPERACION_RESTA.equals(operacion.toUpperCase()) ||
                         Constantes.OPERACION_RESTAR.equals(operacion.toUpperCase())){
+                    // Realizamos la operación resta.
                     resultado = OperacionUtils.operacionResta(bdNumero1, bdNumero2);
+
+                    // Guardamos el resultado de la operación.
                     resultDTO = new ResultDTO(String.valueOf(resultado), true);
                 }
                 else{
+                    // Si la operación no está implementada devolvemos un error.
                     log.error("Operacion " + operacion + " no implementada");
                     resultDTO = new ResultDTO("Operacion " + operacion + " no implementada", false);
                 }
@@ -61,8 +67,10 @@ public class CalculadoraServiceImpl implements ICalculadoraService {
 
         log.info("realizarOperacion - FIN - resultado: " + resultado);
 
+        // Guardamos la traza de la operación realizada.
         tracer.trace(resultDTO);
 
+        // Devolvemos el resultado.
         return resultDTO;
     }
 }
