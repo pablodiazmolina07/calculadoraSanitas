@@ -13,7 +13,7 @@ API de calculadora con spring boot y maven Pasos para generar el jar y ejecutarl
     
 3 - Tras la compilación en la misma ventanta de comando y en la carpeta donde se encuentra el pom.xml y ejecutar el comando: mvn spring-boot:run
 
-4 - Mediante un navegador realizar la llamada a la api. Por ejemplo: http://localhost:8080/api/calculadora/realizarOperacion?numero1=100,7&numero2=5&operacion=A
+4 - Mediante un navegador realizar la llamada a la api. Por ejemplo: http://localhost:8080/api/calculadora/realizarOperacion?numero1=100.7&numero2=5&operacion=A
 
 5 - Deberá de obtener un resultado parecido al siguiente: {"result":"105.7","success":true}
 
