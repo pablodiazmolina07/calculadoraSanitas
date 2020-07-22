@@ -24,14 +24,14 @@ public class CalculadoraServiceTest {
     public void calculateNullValues() {
         ResultDTO expected = new ResultDTO("Formato de los números a operar incorrecto.", false);
 
-        ResultDTO result = calculadoraService.realizarOperacion("10", "5", "suma");
+        ResultDTO result = calculadoraService.realizarOperacion(new BigDecimal("10"), new BigDecimal("5"), "A");
         assertEquals(expected, result);
     }
     @Test
     public void calculateAddition() {
         ResultDTO expected = new ResultDTO("15", true);
 
-        ResultDTO result = calculadoraService.realizarOperacion("10","5", "suma");
+        ResultDTO result = calculadoraService.realizarOperacion(new BigDecimal("10"),new BigDecimal("5"), "A");
         assertEquals(expected, result);
     }
 
@@ -39,14 +39,14 @@ public class CalculadoraServiceTest {
     public void calculateSubtraction() {
         ResultDTO expected = new ResultDTO("5", true);
 
-        ResultDTO result = calculadoraService.realizarOperacion("10","5", "resta");
+        ResultDTO result = calculadoraService.realizarOperacion(new BigDecimal("10"),new BigDecimal("5"), "S");
         assertEquals(expected, result);
     }
     @Test
     public void operationNotImplemented() {
         ResultDTO expected = new ResultDTO("5", true);
 
-        ResultDTO result = calculadoraService.realizarOperacion("10","5", "producto");
+        ResultDTO result = calculadoraService.realizarOperacion(new BigDecimal("10"),new BigDecimal("5"), "P");
         assertEquals(expected, result);
     }
 }

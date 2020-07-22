@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 /**
  * Controller de la api
  */
@@ -20,14 +22,14 @@ public class CalculadoraController {
 
     /**
      * Método Get visible para llamar al microservicio
-     * @param numero1 cadena con el primer número de la operación
-     * @param numero2 cadena con el segundo número de la operación
+     * @param numero1 Primer número de la operación
+     * @param numero2 Segundo número de la operación
      * @param operacion cadena con la operación a realizar
      * @return resultado de la operación
      */
     @GetMapping(value = "/realizarOperacion")
-    public ResponseEntity<ResultDTO> realizarOperacion(@RequestParam(name = "numero1", required=true) String numero1,
-                                                    @RequestParam(name = "numero2", required=true) String numero2,
+    public ResponseEntity<ResultDTO> realizarOperacion(@RequestParam(name = "numero1", required=true) BigDecimal numero1,
+                                                    @RequestParam(name = "numero2", required=true) BigDecimal numero2,
                                                     @RequestParam(name = "operacion", required=true) String operacion) {
 
         // Realizamos la llamada el servicio encargado de realizar la operación.

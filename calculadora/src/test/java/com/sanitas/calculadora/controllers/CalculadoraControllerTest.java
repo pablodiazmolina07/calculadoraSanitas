@@ -10,6 +10,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.math.BigDecimal;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -46,13 +49,13 @@ public class CalculadoraControllerTest {
 
     @Test
     public void noRequiredFirstParam() throws Exception {
-        String url = RESTA_URI.concat("?").concat(SECOND_PARAM_NAME).concat("=").concat("10").concat("&").concat(THIRD_PARAM_NAME).concat("suma");
+        String url = RESTA_URI.concat("?").concat(SECOND_PARAM_NAME).concat("=").concat("10").concat("&").concat(THIRD_PARAM_NAME).concat("A");
         mvc.perform(post(url)).andExpect(status().isBadRequest());
     }
 
     @Test
     public void noRequiredSecondParam() throws Exception {
-        String url = RESTA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10").concat("&").concat(THIRD_PARAM_NAME).concat("suma");
+        String url = RESTA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10").concat("&").concat(THIRD_PARAM_NAME).concat("A");
         mvc.perform(post(url)).andExpect(status().isBadRequest());
     }
 
@@ -65,39 +68,37 @@ public class CalculadoraControllerTest {
     @Test
     public void operacionNoPermitida() throws Exception {
         ResultDTO resultOperation = new ResultDTO("15.0" ,true);
-        when(calculadoraService.realizarOperacion("10", "5","suma")).thenReturn(resultOperation);
+        when(calculadoraService.realizarOperacion(new BigDecimal("10"), new BigDecimal("5"),"A")).thenReturn(resultOperation);
 
         String url = SUMA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10")
                 .concat("&").concat(SECOND_PARAM_NAME).concat("=").concat("5")
-                .concat("&").concat(THIRD_PARAM_NAME).concat("=").concat("producto");
+                .concat("&").concat(THIRD_PARAM_NAME).concat("=").concat("P");
 
         ResultActions result = mvc.perform(post(url));
 
-        result.andExpect(status().isOk()).andExpect(content().json("{\"result\": \"Operacion producto no implementada\", \"success\": false}"));
+        result.andExpect(status().isOk()).andExpect(content().json("{\"result\": \"Operacion P no implementada\", \"success\": false}"));
     }
 
     @Test
     public void formatoOperadoresNoValido() throws Exception {
         ResultDTO resultOperation = new ResultDTO("15.0", true);
-        when(calculadoraService.realizarOperacion("10", "","suma")).thenReturn(resultOperation);
+        when(calculadoraService.realizarOperacion(new BigDecimal("10"), new BigDecimal(""),"A")).thenReturn(resultOperation);
 
         String url = SUMA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10")
                 .concat("&").concat(SECOND_PARAM_NAME).concat("=").concat("")
-                .concat("&").concat(THIRD_PARAM_NAME).concat("=").concat("suma");
+                .concat("&").concat(THIRD_PARAM_NAME).concat("=").concat("A");
 
-        ResultActions result = mvc.perform(post(url));
-
-        result.andExpect(status().isOk()).andExpect(content().json("{\"result\": \"Formato de los números a operar incorrecto.\", \"success\": false}"));
+        mvc.perform(post(url)).andExpect(status().isBadRequest());
     }
 
     @Test
     public void operacionSuma_responseOK() throws Exception {
         ResultDTO resultOperation = new ResultDTO("15.0", true);
-        when(calculadoraService.realizarOperacion("10", "5","suma")).thenReturn(resultOperation);
+        when(calculadoraService.realizarOperacion(new BigDecimal("10"), new BigDecimal("5"),"suma")).thenReturn(resultOperation);
 
         String url = SUMA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10")
                 .concat("&").concat(SECOND_PARAM_NAME).concat("=").concat("5")
-                .concat("&").concat(THIRD_PARAM_NAME).concat("=").concat("suma");
+                .concat("&").concat(THIRD_PARAM_NAME).concat("=").concat("A");
         ResultActions result = mvc.perform(post(url));
 
         result.andExpect(status().isOk()).andExpect(content().json("{\"result\": \"15.0\", \"success\": true}"));
@@ -107,12 +108,12 @@ public class CalculadoraControllerTest {
     public void operacionResta_responseOK() throws Exception {
         ResultDTO resultOperation = new ResultDTO("5.0", true);
 
-        when(calculadoraService.realizarOperacion("10", "5","resta")).thenReturn(resultOperation);
+        when(calculadoraService.realizarOperacion(new BigDecimal("10"), new BigDecimal("5"),"resta")).thenReturn(resultOperation);
 
         ResultActions result = mvc.perform(
                 post(SUMA_URI.concat("?").concat(FIRST_PARAM_NAME).concat("=").concat("10")
                         .concat("&").concat(SECOND_PARAM_NAME).concat("=").concat("5")
-                        .concat("&").concat(THIRD_PARAM_NAME).concat("=").concat("resta")));
+                        .concat("&").concat(THIRD_PARAM_NAME).concat("=").concat("S")));
 
         result.andExpect(status().isOk()).andExpect(content().json("{\"result\": \"5.0\", \"success\": true}"));
     }

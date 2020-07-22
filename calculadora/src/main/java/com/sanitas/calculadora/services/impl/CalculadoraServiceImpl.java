@@ -1,7 +1,7 @@
 package com.sanitas.calculadora.services.impl;
 
-import com.sanitas.calculadora.constants.Constantes;
 import com.sanitas.calculadora.dtos.ResultDTO;
+import com.sanitas.calculadora.enums.OperacionesEnum;
 import com.sanitas.calculadora.services.ICalculadoraService;
 import com.sanitas.calculadora.utils.OperacionUtils;
 import io.corp.calculator.TracerImpl;
@@ -18,7 +18,7 @@ public class CalculadoraServiceImpl implements ICalculadoraService {
     private TracerImpl tracer = new TracerImpl();
 
     @Override
-    public ResultDTO realizarOperacion(String numero1, String numero2, String operacion) {
+    public ResultDTO realizarOperacion(BigDecimal numero1, BigDecimal numero2, String operacion) {
         log.info("realizarOperacion - INICIO");
 
         ResultDTO resultDTO = null;
@@ -27,37 +27,24 @@ public class CalculadoraServiceImpl implements ICalculadoraService {
 
         // Validamos si la operación es correcta
         if (!"".equalsIgnoreCase(operacion)){
-            try
-            {
-                //Transformamos las cadenas de entrada a numéricos
-                BigDecimal bdNumero1 = new BigDecimal(numero1.replace(",", "."));
-                BigDecimal bdNumero2 = new BigDecimal(numero2.replace(",", "."));
+            // Identificamos la operación y la realizamos.
+            if (OperacionesEnum.ADDITION.getCodigo().equals(operacion.toUpperCase())){
+                // Realizamos la operación suma.
+                resultado = OperacionUtils.operacionSuma(numero1, numero2);
 
-                // Identificamos la operación y la realizamos.
-                if (Constantes.OPERACION_SUMA.equals(operacion.toUpperCase()) ||
-                        Constantes.OPERACION_SUMAR.equals(operacion.toUpperCase())){
-                    // Realizamos la operación suma.
-                    resultado = OperacionUtils.operacionSuma(bdNumero1, bdNumero2);
+                // Guardamos el resultado de la operación.
+                resultDTO = new ResultDTO(String.valueOf(resultado), true);
+            }else if (OperacionesEnum.SUBTRACTION.getCodigo().equals(operacion.toUpperCase())){
+                // Realizamos la operación resta.
+                resultado = OperacionUtils.operacionResta(numero1, numero2);
 
-                    // Guardamos el resultado de la operación.
-                    resultDTO = new ResultDTO(String.valueOf(resultado), true);
-                }else if (Constantes.OPERACION_RESTA.equals(operacion.toUpperCase()) ||
-                        Constantes.OPERACION_RESTAR.equals(operacion.toUpperCase())){
-                    // Realizamos la operación resta.
-                    resultado = OperacionUtils.operacionResta(bdNumero1, bdNumero2);
-
-                    // Guardamos el resultado de la operación.
-                    resultDTO = new ResultDTO(String.valueOf(resultado), true);
-                }
-                else{
-                    // Si la operación no está implementada devolvemos un error.
-                    log.error("Operacion " + operacion + " no implementada");
-                    resultDTO = new ResultDTO("Operacion " + operacion + " no implementada", false);
-                }
+                // Guardamos el resultado de la operación.
+                resultDTO = new ResultDTO(String.valueOf(resultado), true);
             }
-            catch (NumberFormatException ex){
-                log.error("Formato de los números a operar incorrecto.");
-                resultDTO = new ResultDTO("Formato de los números a operar incorrecto.", false);
+            else{
+                // Si la operación no está implementada devolvemos un error.
+                log.error("Operacion " + operacion + " no implementada");
+                resultDTO = new ResultDTO("Operacion " + operacion + " no implementada", false);
             }
         }
         else{
