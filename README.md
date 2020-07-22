@@ -5,9 +5,9 @@ API de calculadora con spring boot y maven Pasos para generar el jar y ejecutarl
 
 1 - Descargar el proyecto https://github.com/pablodiazmolina07/calculadoraSanitas
 
-2 - Abrir un cmd en la carpeta donde se encuentra el pom.xml y ejecutar el comando: 
+2 - Para compilar el proyecto, abrir un cmd en la carpeta donde se encuentra el pom.xml y ejecutar el comando: 
     
-    + Sin test: mvn install:install-file -Dfile=lib/tracer-1.0.0.jar -DgroupId=com.tracer -DartifactId=tracer -Dversion=1.0 -Dpackaging=jar package -Dmaven.test.skip=true  
+    + Sin test: mvn install:install-file -Dfile=lib/tracer-1.0.0.jar -DgroupId=com.tracer -DartifactId=tracer -Dversion=1.0 -Dpackaging=jar package -Dmaven.test.skip=true
     
     + Con test: mvn install:install-file -Dfile=lib/tracer-1.0.0.jar -DgroupId=com.tracer -DartifactId=tracer -Dversion=1.0 -Dpackaging=jar package
     
